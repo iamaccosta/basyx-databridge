@@ -22,7 +22,7 @@
  * 
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
-package main.java.org.eclipse.digitaltwin.basyx.databridge.kafka.configuration;
+package org.eclipse.digitaltwin.basyx.databridge.kafka.configuration;
 
 import org.eclipse.digitaltwin.basyx.databridge.core.configuration.entity.DataSinkConfiguration;
 
@@ -33,21 +33,50 @@ import org.eclipse.digitaltwin.basyx.databridge.core.configuration.entity.DataSi
  */
 public class KafkaProducerConfiguration extends DataSinkConfiguration {
 	private String topic;
-	private int maxPollRecords;
+	private int maxPublishRecords;
 	private String groupId;
 	private int producersCount;
 	private String seekTo;
+	private String serverUrl;
+	private int serverPort;
 	
 	public KafkaProducerConfiguration() {}
 	
-	public KafkaProducerConfiguration(String uniqueId, String serverUrl, int serverPort, String topic,
-			int maxPollRecords, String groupId, int producersCount, String seekTo) {
-		super(uniqueId, serverUrl, serverPort);
+	public KafkaProducerConfiguration(
+		String uniqueId, 
+		String serverUrl, 
+		int serverPort, 
+		String topic,
+		int maxPublishRecords, 
+		String groupId, 
+		int producersCount, 
+		String seekTo
+	) {
+		super(uniqueId);
+
+		this.serverUrl = serverUrl;
+		this.serverPort = serverPort;
 		this.topic = topic;
-		this.maxPollRecords = maxPollRecords;
+		this.maxPublishRecords = maxPublishRecords;
 		this.groupId = groupId;
 		this.producersCount = producersCount;
 		this.seekTo = seekTo;
+	}
+
+	public String getServerUrl() {
+		return serverUrl;
+	}
+
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+
+	public int getServerPort() {
+		return serverPort;
+	}
+
+	public void setServerPort(int serverPort) {
+		this.serverPort = serverPort;
 	}
 
 	public String getTopic() {
@@ -58,12 +87,12 @@ public class KafkaProducerConfiguration extends DataSinkConfiguration {
 		this.topic = topic;
 	}
 
-	public int getMaxPollRecords() {
-		return maxPollRecords;
+	public int getMaxPublishRecords() {
+		return maxPublishRecords;
 	}
 
-	public void setMaxPollRecords(int maxPollRecords) {
-		this.maxPollRecords = maxPollRecords;
+	public void setMaxPublishRecords(int maxPublishRecords) {
+		this.maxPublishRecords = maxPublishRecords;
 	}
 
 	public String getGroupId() {
@@ -93,7 +122,7 @@ public class KafkaProducerConfiguration extends DataSinkConfiguration {
 	public String getConnectionURI() {
 		return 
 		"kafka:" + getTopic() + "?brokers=" + getServerUrl() + ":" + getServerPort()
-		+ "&maxPollRecords=" + getMaxPollRecords()
+		+ "&maxPublishRecords=" + getMaxPublishRecords()
         + "&producersCount=" + getProducersCount()
         + "&seekTo=" + getSeekTo()
         + "&groupId="  + getGroupId();
