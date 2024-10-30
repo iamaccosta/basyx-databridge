@@ -29,7 +29,7 @@ import org.eclipse.digitaltwin.basyx.databridge.kafka.configuration.KafkaProduce
 
 /**
  * A default configuration factory for kafka from a default file location
- * @author haque
+ * @author iamaccosta
  *
  */
 public class KafkaDefaultSinkConfigurationFactory extends DataSinkConfigurationFactory {
