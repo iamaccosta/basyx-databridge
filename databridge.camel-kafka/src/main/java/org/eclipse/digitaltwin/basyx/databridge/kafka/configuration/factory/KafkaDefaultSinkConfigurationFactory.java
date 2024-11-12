@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021 the Eclipse BaSyx Authors
+ * Copyright (C) 2024 the Eclipse BaSyx Authors
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -28,7 +28,7 @@ import org.eclipse.digitaltwin.basyx.databridge.core.configuration.factory.DataS
 import org.eclipse.digitaltwin.basyx.databridge.kafka.configuration.KafkaProducerConfiguration;
 
 /**
- * A default configuration factory for kafka from a default file location
+ * A default sink configuration factory for kafka from a default file location
  * @author iamaccosta
  *
  */

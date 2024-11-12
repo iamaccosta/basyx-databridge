@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021 the Eclipse BaSyx Authors
+ * Copyright (C) 2024 the Eclipse BaSyx Authors
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -27,18 +27,20 @@ package org.eclipse.digitaltwin.basyx.databridge.kafka.configuration;
 import org.eclipse.digitaltwin.basyx.databridge.core.configuration.entity.DataSinkConfiguration;
 
 /**
- * An implementation of kafka consumer configuration
- * @author haque
+ * An implementation of kafka producer configuration
+ * @author iamaccosta
  *
  */
 public class KafkaProducerConfiguration extends DataSinkConfiguration {
-	private String topic;
-	private int maxPublishRecords;
-	private String groupId;
-	private int producersCount;
-	private String seekTo;
 	private String serverUrl;
 	private int serverPort;
+	private String topic;
+	private String groupId;
+	private String seekTo;
+	private int maxPublishRecords;
+	private int producersCount;
+	private int bufferMemorySize;
+	private int maxRequestSize;
 	
 	public KafkaProducerConfiguration() {}
 	
@@ -47,20 +49,24 @@ public class KafkaProducerConfiguration extends DataSinkConfiguration {
 		String serverUrl, 
 		int serverPort, 
 		String topic,
-		int maxPublishRecords, 
 		String groupId, 
-		int producersCount, 
-		String seekTo
+		String seekTo,
+		int maxPublishRecords, 
+		int producersCount,
+		int bufferMemorySize,
+		int maxRequestSize 
 	) {
 		super(uniqueId);
 
 		this.serverUrl = serverUrl;
 		this.serverPort = serverPort;
 		this.topic = topic;
-		this.maxPublishRecords = maxPublishRecords;
 		this.groupId = groupId;
-		this.producersCount = producersCount;
 		this.seekTo = seekTo;
+		this.maxPublishRecords = maxPublishRecords;
+		this.producersCount = producersCount;
+		this.bufferMemorySize = bufferMemorySize;
+		this.maxRequestSize = maxRequestSize;
 	}
 
 	public String getServerUrl() {
@@ -87,20 +93,28 @@ public class KafkaProducerConfiguration extends DataSinkConfiguration {
 		this.topic = topic;
 	}
 
-	public int getMaxPublishRecords() {
-		return maxPublishRecords;
-	}
-
-	public void setMaxPublishRecords(int maxPublishRecords) {
-		this.maxPublishRecords = maxPublishRecords;
-	}
-
 	public String getGroupId() {
 		return groupId;
 	}
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+	
+	public String getSeekTo() {
+		return seekTo;
+	}
+
+	public void setSeekTo(String seekTo) {
+		this.seekTo = seekTo;
+	}
+
+	public int getMaxPublishRecords() {
+		return maxPublishRecords;
+	}
+
+	public void setMaxPublishRecords(int maxPublishRecords) {
+		this.maxPublishRecords = maxPublishRecords;
 	}
 
 	public int getProducersCount() {
@@ -111,20 +125,40 @@ public class KafkaProducerConfiguration extends DataSinkConfiguration {
 		this.producersCount = producersCount;
 	}
 
-	public String getSeekTo() {
-		return seekTo;
+	public int getBufferMemorySize() {
+		return bufferMemorySize;
 	}
 
-	public void setSeekTo(String seekTo) {
-		this.seekTo = seekTo;
+	public void setBufferMemorySize(int bufferMemorySize) {
+		this.bufferMemorySize = bufferMemorySize;
+	}
+
+	public int getMaxRequestSize() {
+		return maxRequestSize;
+	}
+
+	public void setMaxRequestSize(int maxRequestSize) {
+		this.maxRequestSize = maxRequestSize;
 	}
 
 	public String getConnectionURI() {
-		return 
-		"kafka:" + getTopic() + "?brokers=" + getServerUrl() + ":" + getServerPort()
-		+ "&maxPublishRecords=" + getMaxPublishRecords()
-        + "&producersCount=" + getProducersCount()
-        + "&seekTo=" + getSeekTo()
-        + "&groupId="  + getGroupId();
+		if (isNullOrEmpty(getTopic()) || isNullOrEmpty(getServerUrl()) || isNullOrEmpty(getGroupId()) ||
+			getServerPort() == 0 || getMaxPublishRecords() == 0 || getProducersCount() == 0 || 
+			isNullOrEmpty(getSeekTo()) || getBufferMemorySize() == 0 || getMaxRequestSize() == 0) {
+			throw new IllegalArgumentException("Missing configuration for Kafka DataSink. Please check that all required parameters are provided.");
+		}
+	
+		return "kafka:" + getTopic() + "?brokers=" + getServerUrl() + ":" + getServerPort()
+			+ "&seekTo=" + getSeekTo()
+			+ "&groupId=" + getGroupId()
+			+ "&maxPublishRecords=" + getMaxPublishRecords()
+			+ "&producersCount=" + getProducersCount()
+			+ "&bufferMemorySize=" + getBufferMemorySize()
+			+ "&maxRequestSize=" + getMaxRequestSize();
+
+	}
+	
+	private boolean isNullOrEmpty(String str) {
+		return str == null || str.trim().isEmpty();
 	}
 }
