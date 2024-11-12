@@ -22,7 +22,7 @@
  * 
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
-package main.java.org.eclipse.digitaltwin.basyx.databridge.kafka.configuration.factory;
+package org.eclipse.digitaltwin.basyx.databridge.kafka.configuration.factory;
 
 import org.eclipse.digitaltwin.basyx.databridge.core.configuration.factory.DataSinkConfigurationFactory;
 import org.eclipse.digitaltwin.basyx.databridge.kafka.configuration.KafkaProducerConfiguration;
