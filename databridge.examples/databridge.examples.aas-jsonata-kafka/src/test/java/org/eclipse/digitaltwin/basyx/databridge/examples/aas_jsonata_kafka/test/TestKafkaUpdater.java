@@ -80,7 +80,6 @@ public class TestKafkaUpdater {
 
 	private static KafkaServer kafkaServer;
 
-	protected static IIdentifier deviceAASId = new CustomId("TestUpdatedDeviceAAS");
 	private static BaSyxContextConfiguration aasContextConfig;
 
 	private static TestingServer zookeeper;
